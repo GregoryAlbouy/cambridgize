@@ -12,9 +12,9 @@ func TestCambridgize(t *testing.T) {
 		rgx  string
 	}{
 		{
-			desc: "regular text",
-			in:   "Hello my name is Greg",
-			rgx:  `^H[el]{3}o my n[am]{2}e is G[re]{2}g$`,
+			"regular text",
+			"Hello my name is Greg",
+			`^H[el]{3}o my n[am]{2}e is G[re]{2}g$`,
 		}, {
 			"no change",
 			"hey how are you now",
