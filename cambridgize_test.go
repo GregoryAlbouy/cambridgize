@@ -43,7 +43,7 @@ func TestCambridgize(t *testing.T) {
 		got := Cambridgize(tc.in)
 
 		if !rgx.MatchString(tc.in) {
-			t.Errorf("%s: invalid output expected %s, got %s\n", tc.desc, tc.rgx, got)
+			t.Errorf("invalid output - %s: expected %s, got %s\n", tc.desc, tc.rgx, got)
 		}
 
 		if got == tc.in && rgx.MatchString("/w{4,}") {
@@ -66,11 +66,11 @@ func TestCambridgizeWord(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
-		got := cambridgizeWord(tc.in)
-
 		for i := 0; i < 10; i++ {
+			got := cambridgizeWord(tc.in)
 			if !contains(tc.exp, got) {
-				t.Errorf("invalid word output: expected %v, got %s\n", tc.exp, got)
+				t.Errorf("invalid word output - %s: expected %v, got %s\n", tc.desc, tc.exp, got)
+				break
 			}
 		}
 	}
