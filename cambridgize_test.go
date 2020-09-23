@@ -2,6 +2,7 @@ package main
 
 import (
 	"regexp"
+	"strings"
 	"testing"
 )
 
@@ -46,8 +47,8 @@ func TestCambridgize(t *testing.T) {
 			t.Errorf("invalid output - %s: expected %s, got %s\n", tc.desc, tc.rgx, got)
 		}
 
-		if got == tc.in && rgx.MatchString("/w{4,}") {
-			t.Errorf("%s: expected changes, found no changes", tc.desc)
+		if got == tc.in && expectsChange(tc.desc) {
+			t.Errorf("no changes - %s: expected to change, got %s", tc.desc, got)
 		}
 	}
 }
@@ -66,12 +67,23 @@ func TestCambridgizeWord(t *testing.T) {
 	}
 
 	for _, tc := range testcases {
+		equalityCount := 0
+
 		for i := 0; i < 10; i++ {
 			got := cambridgizeWord(tc.in)
+
 			if !contains(tc.exp, got) {
 				t.Errorf("invalid word output - %s: expected %v, got %s\n", tc.desc, tc.exp, got)
 				break
 			}
+
+			if got == tc.in && expectsChange(tc.desc) {
+				equalityCount++
+			}
+		}
+
+		if equalityCount == 10 {
+			t.Errorf("cambridgizeWord had no effect - %s: %s\n", tc.desc, tc.in)
 		}
 	}
 }
@@ -83,4 +95,8 @@ func contains(strs []string, s string) bool {
 		}
 	}
 	return false
+}
+
+func expectsChange(desc string) bool {
+	return !strings.Contains(desc, "no change")
 }
